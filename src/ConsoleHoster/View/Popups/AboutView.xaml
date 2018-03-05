@@ -1,0 +1,10 @@
+﻿<Window x:Class="ConsoleHoster.View.Popups.AboutView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About ConsoleHoster" SizeToContent="WidthAndHeight" ShowInTaskbar="False" ResizeMode="NoResize" Icon="/ConsoleHoster;component/Application.ico" Background="#FFC5D9E4">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+        <TextBlock><Run FontWeight="Bold">Version:</Run> <Run>1.2.0.2</Run></TextBlock>
+        <TextBlock><Run FontWeight="Bold">Author:</Run> <Run>Artak Mkrtchyan</Run></TextBlock>
+        <TextBlock><Hyperlink NavigateUri="http://consolehoster.codeplex.com" RequestNavigate="Hyperlink_RequestNavigate_1">http://consolehoster.codeplex.com</Hyperlink></TextBlock>
+    </StackPanel>
+</Window>

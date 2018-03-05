@@ -1,0 +1,18 @@
+1. Explorer tree affects performance. When there are too many items in the list
+4. Break process (Ctrl+C)
+6. Optional font support
+14. Option to turn on, to show the date/time of each message
+Templated commands
+Color choozing dialogs
+Command buttons can have customizable colors
+Hightlight current directory in explorer better
+No red separator line
+Plugin based architecture
+Duplicate project functionality
+Share command(s) by exporting to XML file
+Import command(s) by importing the xml file
+enter in find window should work as "Next" button click
+Find window bug: first click on next does nothing
+_ in project name doesn't show up properly
+About dialog with contact email for suggestions and bug reports.
+Auto-update feature

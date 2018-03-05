@@ -1,0 +1,23 @@
+﻿<Window x:Class="ConsoleHoster.View.Popups.HelpView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="HelpView" Height="300" Width="300">
+    <Grid>
+        <RichTextBox>
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="The ConsoleHoster is a tool designed to make the work with multiple console-based applications much easier. Please refer to below sections for more details about the features supported."/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="Project: A project is a single application representation in the tool. (i.e. a razzle window). To create a project you can go to the "/>
+                    <Run FontWeight="Bold" Text="New Project..."/>
+                    <Run Text="  menu item in the File menu. A new dialog will open with fields for the specifying the following details:"/><LineBreak />
+                    <Run Text="" />
+                </Paragraph>
+                <Paragraph>
+                    <Run Text="  "/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
+</Window>

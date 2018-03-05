@@ -1,0 +1,48 @@
+﻿<ButtonBase x:Class="ConsoleHoster.View.Controls.TabCloseButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <ContentControl.Resources>
+        <Storyboard x:Key="OnMouseEnter">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Offset)" Storyboard.TargetName="path">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0.7"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OnMouseLeave">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Offset)" Storyboard.TargetName="path">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0.216"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ContentControl.Resources>
+    <ContentControl.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+            <BeginStoryboard x:Name="OnMouseLeave_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+            <BeginStoryboard x:Name="OnMouseEnter_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter}"/>
+        </EventTrigger>
+    </ContentControl.Triggers>
+
+    <Grid x:Name="LayoutRoot">
+        <Path x:Name="path" Data="M125.5,0.5 L174.5,0.5 C180.02284,0.5 184.5,4.97715 184.5,10.5 L184.5,115.5 289.5,115.5 C295.02286,115.5 299.5,119.97715 299.5,125.5 L299.5,174.5 C299.5,180.02285 295.02286,184.5 289.5,184.5 L184.5,184.5 184.5,289.5 C184.5,295.02284 180.02284,299.5 174.5,299.5 L125.5,299.5 C119.97715,299.5 115.5,295.02284 115.5,289.5 L115.5,184.5 10.500002,184.5 C4.9771523,184.5 0.5,180.02285 0.5,174.5 L0.5,125.5 C0.5,119.97715 4.9771523,115.5 10.500002,115.5 L115.5,115.5 115.5,10.5 C115.5,4.97715 119.97715,0.5 125.5,0.5 z" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+            <Path.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFD81414" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FEE35656" Offset="0.216"/>
+                    <GradientStop Color="#FE761010" Offset="0.961"/>
+                </RadialGradientBrush>
+            </Path.Fill>
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="225"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+    </Grid>
+</ButtonBase>

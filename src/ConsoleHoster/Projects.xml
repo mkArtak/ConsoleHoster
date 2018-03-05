@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HosterConfig>
+  <Projects>
+    <Project name="Stressed Output" executable="D:\Projects\OutputStressTest\OutputStressTest\bin\Debug\OutputStressTest.exe" autoload="false" color="#FFEBEBEB" backgroundcolor="#FF000000" caretcolor="#FFFFFFFF" errorcolor="#FFFF0000" messagecolor="#FFFFFFFF" />
+    <Project name="Project_1" executable="cmd.exe" workingdirectory="C:\" autoload="true" color="#FFEBEBEB" backgroundcolor="#FF008000" caretcolor="#FFFFFFFF" errorcolor="#FF000000" messagecolor="#FF0000FF">
+      <Commands>
+        <Command name="C Drive" group="Favorites" isfinal="True" color="#FFEBEBEB">
+          cd C:
+          C:
+          cd \
+        </Command>
+        <Command name="Change Dir" isfinal="False" color="#FFEBEBEB">cd</Command>
+        <Command name="Colored Command" group="Alpha" isfinal="False" color="#FF800080">daf</Command>
+        <Command name="D Drive" group="Favorites" isfinal="True" color="#FFEBEBEB">
+          cd D:
+          D:
+          cd \
+        </Command>
+      </Commands>
+    </Project>
+  </Projects>
+  <GenericCommands>
+    <Command Name="dir" Group="Navigation" CommandText="dir" isFinal="true" />
+    <Command Name="Root Level" Group="Navigation" CommandText="cd \" isFinal="true" />
+    <Command Name="Level Up" Group="Navigation" CommandText="cd .." isFinal="true" />
+  </GenericCommands>
+</HosterConfig>

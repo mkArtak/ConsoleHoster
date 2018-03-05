@@ -1,0 +1,175 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ConsoleHoster.ViewModel"
+        xmlns:vw="clr-namespace:ConsoleHoster.View"
+        xmlns:uc="clr-namespace:ConsoleHoster.View.Controls"
+    xmlns:wc="clr-namespace:ConsoleHoster.Common.Controls;assembly=ConsoleHoster.Common"
+        xmlns:cv="clr-namespace:ConsoleHoster.View.Converters"
+        x:Class="ConsoleHoster.View.MainWindow"
+        Title="Console Hoster" Height="350" MinHeight="200" Width="700" MinWidth="400" Foreground="Black" Background="#FF9BB8C9" BorderThickness="0" Icon="/ConsoleHoster;component/Resources/Application.ico" Closing="Window_Closing_1" Activated="Window_Activated_1" PreviewKeyDown="MainWindow_PreviewKeyDown_1" Loaded="MainWindow_Loaded_1">
+    <Window.Resources>
+        <cv:ObjectToVisibilityConverter x:Key="cvObjectToVisibilityConverter"/>
+        <cv:CollectionToVisibilityConverter x:Key="cvCollectionToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="cvBooleanToVisibilityConverter"/>
+        <cv:ObjectToBoolConverter x:Key="cvObjectToBoolConverter" />
+    </Window.Resources>
+    <Window.Effect>
+        <DropShadowEffect Color="#FFC3DDF3" Opacity="0.5" ShadowDepth="3"/>
+    </Window.Effect>
+    <Window.DataContext>
+        <vm:ConsoleHostViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="20" Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu bar -->
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="New project..." Click="NewProject_Click" />
+                <MenuItem Header="Import..." Click="ImportProject_Click" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Font..." Click="FontMenu_Click" />
+                <MenuItem Header="Project..." Click="EditProject_Click" Visibility="{Binding Path=ActiveConsole, Converter={StaticResource ResourceKey=cvObjectToVisibilityConverter}}" IsEnabled="{Binding Path=ActiveConsole.Project.IsEditable}" />
+            </MenuItem>
+            <MenuItem Header="Project" Visibility="{Binding Path=ActiveConsole, Converter={StaticResource ResourceKey=cvObjectToVisibilityConverter}}" IsEnabled="{Binding Path=ActiveConsole.Project.IsEditable}">
+                <MenuItem Header="Delete..." Click="DeleteProject_Click" />
+                <MenuItem Header="Duplicate..." Click="DuplicateProject_Click" />
+            </MenuItem>
+            <MenuItem Header="View" Visibility="{Binding Path=ActiveConsole, Converter={StaticResource ResourceKey=cvObjectToVisibilityConverter}}" >
+                <MenuItem IsCheckable="True" IsChecked="{Binding Path=ActiveConsole.ShowExplorerPane}" Header="Explorer Pane"/>
+                <MenuItem IsCheckable="True" IsChecked="{Binding Path=ActiveConsole.AutoScroll}" Header="Auto Scroll" />
+                <MenuItem IsCheckable="True" IsChecked="{Binding Path=ActiveConsole.AutoSyncWithCurrentFolder}" Header="Synced Navigation" />
+                <MenuItem Header="Clear output" IsEnabled="{Binding Path=ActiveConsole, Converter={StaticResource cvObjectToBoolConverter}}" Command="{Binding Path=ActiveConsole.ClearHistoryCommand}" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About..." Click="MenuHelpAbout_Click" />
+                <MenuItem Header="User's Guide" Click="MenuUsersGuide_Click" />
+            </MenuItem>
+        </Menu>
+
+        <!-- Main content -->
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Toolbar area -->
+            <Grid Margin="2, 3, 2, 0">
+                <StackPanel Orientation="Horizontal">
+                    <uc:ConsoleHosterLogo HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{Binding QuickConsoleCommand}" ToolTip="New Console" BorderThickness="0" Background="Black" Padding="0, 1, 0, 1" Margin="0, 0, 5, 0" />
+
+                    <ItemsControl ItemsSource="{Binding AvailableProjects}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding UIFriendlyName}" Command="{Binding DataContext.LoadProjectCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" Margin="0, 0, 5, 0" Cursor="Hand" Background="{Binding Path=ProjectColorBrush}" Padding="5, 1, 5, 1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+
+            <!-- Commands and Consoles area -->
+            <Grid Grid.Row="1" Margin="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ScrollViewer Margin="0, 25, 0, 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                    <Grid IsEnabled="{Binding Path=ActiveConsole.IsAlive}" Visibility="{Binding Path=ActiveConsole, Converter={StaticResource ResourceKey=cvObjectToVisibilityConverter}}" VerticalAlignment="Stretch">
+                        <uc:CommandPresenter DataContext="{Binding Path=AvailableCommands}" VerticalAlignment="Stretch" />
+                    </Grid>
+                </ScrollViewer>
+
+                <!-- Tab control with consoles -->
+                <TabControl Grid.Column="1" ItemsSource="{Binding Projects}" SelectedValue="{Binding ActiveConsole, Mode=TwoWay}" Margin="2, 0, 2, 2" Background="Transparent">
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Header" Value="{Binding Project.UIFriendlyName}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Border x:Name="Border" Background="{Binding Path=Project.ProjectColorBrush}" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="2" >
+                                            <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=CurrentFolder}">
+                                                <wc:WaitIndicator Height="15" Width="15" Margin="5, 2, 0, 2" Visibility="{Binding Path=WaitIndicatorVisibility}" />
+                                                <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"  HorizontalAlignment="Center"  ContentSource="Header" Margin="5,2,5,2"  RecognizesAccessKey="True">
+                                                    <ContentPresenter.LayoutTransform>
+                                                        <RotateTransform Angle="0" />
+                                                    </ContentPresenter.LayoutTransform>
+                                                </ContentPresenter>
+                                                <uc:TabCloseButton Command="{Binding CloseCommand, Mode=OneWay}" Margin="0, 1, 2, 1" Height="12" Width="12" VerticalContentAlignment="Center"  BorderThickness="0" Cursor="Hand" />
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Panel.ZIndex" Value="100" />
+                                                <Setter Property="FontWeight" Value="ExtraBold" />
+                                                <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
+                                                <Setter Property="Opacity" Value="100" />
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Border" Property="Background" >
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="#FF9BB8C9" Offset="0"/>
+                                                            <GradientStop Color="#FFF9F9F9" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                                <Setter Property="Foreground" Value="DarkGray" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <vw:ConsoleView DataContext="{Binding}" />
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+            </Grid>
+        </Grid>
+
+        <!-- Wait inidcator -->
+        <uc:ProgressOverlay Grid.Row="1" Visibility="{Binding IsBusy, Converter={StaticResource cvBooleanToVisibilityConverter}}" />
+
+        <!-- Status bar -->
+        <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <StatusBarItem Foreground="Red" Content="{Binding ErrorMessage}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding ErrorMessage, Converter={StaticResource cvObjectToVisibilityConverter}}" />
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding Path=ActiveConsole, Converter={StaticResource ResourceKey=cvObjectToVisibilityConverter}}" >
+                    <CheckBox IsChecked="{Binding Path=ActiveConsole.ShowRecentMessagesOnly, Mode=TwoWay}" Content="Show recent output only" Margin="0, 0, 3, 0" VerticalAlignment="Center" />
+                    <Border BorderBrush="Black" Padding="3, 0, 0, 0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Zoom(" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Path=ActiveConsole.ZoomLevel}" VerticalAlignment="Center" />
+                            <TextBlock Text="): " VerticalAlignment="Center" />
+                            <Slider HorizontalAlignment="Right" VerticalAlignment="Center" Minimum="{Binding Path=ActiveConsole.MinZoomLevel, Mode=OneWay}" Maximum="{Binding Path=ActiveConsole.MaxZoomLevel, Mode=OneWay}" Value="{Binding Path=ActiveConsole.ZoomLevel, Mode=TwoWay}" Width="100" SmallChange="1" LargeChange="5" Margin="0, 0, 3, 0">
+                                <Slider.RenderTransform>
+                                    <ScaleTransform ScaleY="0.5" CenterY="12.5" />
+                                </Slider.RenderTransform>
+                            </Slider>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

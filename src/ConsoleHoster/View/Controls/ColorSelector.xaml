@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="ConsoleHoster.View.Controls.ColorSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBox Text="{Binding ColorCode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="txtColorCode" />
+        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Width="15" Height="15" x:Name="btnColor"  IsTabStop="False" />
+    </Grid>
+</UserControl>

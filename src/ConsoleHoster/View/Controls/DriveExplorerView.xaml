@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="ConsoleHoster.View.Controls.DriveExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cv="clr-namespace:ConsoleHoster.View.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cv:HeaderToImageConverter x:Key="cvExplorerItemTypeToImageConverter" />
+    </UserControl.Resources>
+
+    <TreeView ItemsSource="{Binding Drives}" Background="White">
+        <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                <Setter Property="FontWeight" Value="Normal" />
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </TreeView.ItemContainerStyle>
+
+        <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.ContextMenu>
+                        <ContextMenu Width="215">
+                            <MenuItem Header="{Binding Path=ExplorerItem.Name}" IsEnabled="False" />
+                            <MenuItem Click="OnContextMenu_OpenExplorer">
+                                <MenuItem.Header>
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Explorer" HorizontalAlignment="Left" />
+                                        <TextBlock Width="30" Grid.Column="1" />
+                                        <TextBlock Text="Ctrl+[Right Click]" HorizontalAlignment="Right" Grid.Column="2" />
+                                    </Grid>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem Click="OnContextMenu_UsePath">
+                                <MenuItem.Header>
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Use Path" HorizontalAlignment="Left" />
+                                        <TextBlock Width="30" Grid.Column="1" />
+                                        <TextBlock Text="Ctrl+[Click]" HorizontalAlignment="Right" Grid.Column="2" />
+                                    </Grid>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem Click="OnContextMenu_RedirectTo">
+                                <MenuItem.Header>
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Redirect To" HorizontalAlignment="Left" />
+                                        <TextBlock Width="30" Grid.Column="1" />
+                                        <TextBlock Text="Shift+[Click]" HorizontalAlignment="Right" Grid.Column="2" />
+                                    </Grid>
+                                </MenuItem.Header>
+                            </MenuItem>
+                            <MenuItem Click="OnContextMenu_Run" IsEnabled="{Binding Path=IsFile}">
+                                <MenuItem.Header>
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Run" HorizontalAlignment="Left" />
+                                        <TextBlock Width="30" Grid.Column="1" />
+                                        <TextBlock Text="[Double Click]" HorizontalAlignment="Right" Grid.Column="2" />
+                                    </Grid>
+                                </MenuItem.Header>
+                            </MenuItem>
+                        </ContextMenu>
+                    </StackPanel.ContextMenu>
+                    <Image Name="img" MaxWidth="20" MaxHeight="20" Stretch="Fill" Source="{Binding Path=ExplorerItem.ItemType,  Converter={StaticResource cvExplorerItemTypeToImageConverter}}" />
+                    <TextBlock Text="{Binding Path=ExplorerItem.Alias}" Margin="5,0" MouseLeftButtonUp="OnExplorerItemText_MouseLeftButtonUp" MouseRightButtonUp="OnExplorerItemText_MouseRightButtonUp" MouseLeftButtonDown="OnExplorerItemText_MouseLeftButtonDown" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+    </TreeView>
+</UserControl>

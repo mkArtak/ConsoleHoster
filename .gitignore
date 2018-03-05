@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/ConsoleHoster/obj
+/src/ConsoleHoster/bin
+/src/ConsoleHoster.Common/obj
+/src/ConsoleHoster.Common/bin
+/src/.vs
+.vs
