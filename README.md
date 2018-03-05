@@ -1,2 +1,10 @@
-# ConsoleHoster
-The ConsoleHoster app, migrated from CodePlex.
+# Project Description #
+
+**This project has been migrated from CodePlex. After many years of leaving it stale I've accidentally came accorss it and discovered all the user involvement with it in Codeplex. If you happen to care about this project still, feel free to open issues here in GitHub, and I'll do my best to address those.**
+
+ConsoleHoster is an application aimed to ease the work with console-based applications. One of the most important features it provides is that it allows the user to work with multiple console-based applications (projects later on) the same time � opening each in a separate tab within its main window.
+So, for example, it can host all the console windows in it, so you won't have many taskbar items appear, and be hard to choose which one is which. Also it brings in a lot of nice features for working with console and keeping the user away from the limitations.
+So for example as the window for the console user gets a usual windows-style text box area, where the console messages appear, and the usual selection, copy functionality work there. Also there is a very nice Find in Output functionality integrated. And all this is window-specific.
+If you already have a bunch of shortcuts configured its easy to import those into the ConsoleHoster and have a simple button per each shortcut (which is called a project in the app). So to start a particular project, you just click a button, and a nice tab in the main window will appear hosting the output window, and also an explorer tree in it, which also will be unique to that tab. Enjoy the synced navigation between the explorer tree and the command line. Also remember, the tab-support (so used one) is also available here - so if you want to navigate to some path, or type filename, there is no need to type in whole the word, just prefix+Tab, and you'll get an auto-suggestions by each tab.
+
+There are really much more interesting features already there. Just try it, and you'll like it.
